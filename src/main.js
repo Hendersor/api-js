@@ -5,11 +5,8 @@ async function getTrendingMoviesPreview() {
   const data = await res.json();
   const movies = data.results;
 
+  trendingMoviesPreviewList.innerHTML = "";
   movies.forEach((movie) => {
-    const trendingPreviewMoviesContainer = document.querySelector(
-      "#trendingPreview .trendingPreview-movieList"
-    );
-
     const movieContainer = document.createElement("div");
     movieContainer.classList.add("movie-container");
 
@@ -22,8 +19,30 @@ async function getTrendingMoviesPreview() {
     );
 
     movieContainer.appendChild(movieImg);
-    trendingPreviewMoviesContainer.appendChild(movieContainer);
+    trendingMoviesPreviewList.appendChild(movieContainer);
   });
 }
 
-getTrendingMoviesPreview();
+async function getCategoriesPreview() {
+  const res = await fetch(
+    "https://api.themoviedb.org/3/genre/movie/list?api_key=10a3bf76ca8c31fbf39d182f6c880706"
+  );
+  const data = await res.json();
+  const categories = data.genres;
+
+  categoriesPreviewList.innerHTML = "";
+
+  categories.forEach((category) => {
+    const categoryContainer = document.createElement("div");
+    categoryContainer.classList.add("category-container");
+
+    const categoryTitle = document.createElement("h3");
+    categoryTitle.classList.add("category-title");
+    categoryTitle.setAttribute("id", "id" + category.id);
+    const categoryTitleText = document.createTextNode(category.name);
+
+    categoryTitle.appendChild(categoryTitleText);
+    categoryContainer.appendChild(categoryTitle);
+    categoriesPreviewList.appendChild(categoryContainer);
+  });
+}
